@@ -1,0 +1,68 @@
+{
+  "name": "Clackotron 2000",
+  "version": "1.0.0",
+  "expert": true,
+  "modes": [
+    {
+      "mode": "text",
+      "title": "Custom\nText",
+      "template": "{t1:4}",
+      "paramNames": [
+        "Text"
+      ]
+    },
+    {
+      "mode": "time",
+      "title": "Current\nTime",
+      "template": "{hh}{mm}"
+    },
+    {
+      "mode": "weekday",
+      "title": "Current\nWeekday",
+      "template": "{WD}{DD}"
+    },
+    {
+      "mode": "date",
+      "title": "Current\nDate",
+      "template": "{DD}{MM}"
+    },
+    {
+      "mode": "year",
+      "title": "Current\nYear",
+      "template": "{YYYY}"
+    },
+    {
+      "mode": "off",
+      "title": "Off",
+      "template": ""
+    }
+  ],
+  "strings": {
+    "title-mode": "Mode",
+    "title-options": "Options",
+    "title-preview": "Preview",
+    "expert-mode": "Expert mode",
+    "expert-template": "Expert template",
+    "save-button": "Save configuration",
+    "save-failed": "Failed to save config",
+    "copyright": "Rietliau Clackatron 2000",
+    "day-names-short": [
+      "SO",
+      "MO",
+      "DI",
+      "MI",
+      "DO",
+      "FR",
+      "SA"
+    ],
+    "day-names-long": [
+      "SON",
+      "MON",
+      "DIE",
+      "MIT",
+      "DON",
+      "FRE",
+      "SAM"
+    ]
+  }
+}
