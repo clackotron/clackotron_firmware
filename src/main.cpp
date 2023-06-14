@@ -116,6 +116,10 @@ void setup() {
     wifiManager.setConfigPortalBlocking(false);
     wifiManager.setWiFiAutoReconnect(true);
     wifiManager.autoConnect(WIFI_AP_NAME);
+    wifiManager.setSaveConfigCallback([]() {
+        CTLog::info("main: wifi manager save config callback called, restarting device");
+        ESP.restart();
+    });
 
     // Set up webserver to allow user to configure modules
     webserver.setup(&preferences, &needsToLoadConfig);
