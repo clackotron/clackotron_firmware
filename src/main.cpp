@@ -114,6 +114,7 @@ void setup() {
     // Set up wifi manager to allow user to connect to wifi
     wifiManager.setConnectTimeout(WIFI_CONNECT_TIMEOUT);
     wifiManager.setConfigPortalBlocking(false);
+    wifiManager.setWiFiAutoReconnect(true);
     wifiManager.autoConnect(WIFI_AP_NAME);
 
     // Set up webserver to allow user to configure modules
