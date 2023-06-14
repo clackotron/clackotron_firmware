@@ -68,6 +68,7 @@ class CTPreferences {
     Preferences preferences;
 
     void overrideTimeChangeRule(const char* tag, TimeChangeRule *rule, JsonArray data);
+    void copyLittleFsFile(const char* src, const char* dst);
 };
 
 #endif // _CLACKOTRON_PREFERENCES_H_

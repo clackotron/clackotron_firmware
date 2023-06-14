@@ -23,6 +23,19 @@ bool CTPreferences::setup() {
         this->clear();
     #endif
 
+    // Create factory reset files by copying config files if a backup doesn't exist
+    if (!LittleFS.exists(MODULE_CONFIG_BKP_PATH)) {
+        this->copyLittleFsFile(MODULE_CONFIG_FILE_PATH, MODULE_CONFIG_BKP_PATH);
+    }
+
+    if (!LittleFS.exists(TIMEZONE_CONFIG_BKP_PATH)) {
+        this->copyLittleFsFile(TIMEZONE_CONFIG_FILE_PATH, TIMEZONE_CONFIG_BKP_PATH);
+    }
+
+    if (!LittleFS.exists(WEBINTERFACE_CONFIG_BKP_PATH)) {
+        this->copyLittleFsFile(WEBINTERFACE_CONFIG_FILE_PATH, WEBINTERFACE_CONFIG_BKP_PATH);
+    }
+
     return true;
 }
 
@@ -128,33 +141,6 @@ void CTPreferences::loadTimeZoneData(
     
 }
 
-void CTPreferences::overrideTimeChangeRule(const char* tag, TimeChangeRule *rule, JsonArray data) {
-    if (
-        (data[0] < 0 || data[0] > 4) ||
-        (data[1] < 1 || data[1] > 7) ||
-        (data[2] < 1 || data[2] > 12) ||
-        (data[3] < 0 || data[3] > 23)
-    ) {
-        CTLog::error("preferences: loading " + String(tag) + " time data failed - Invalid values!");
-    }
-
-    rule->week = data[0];
-    rule->dow = data[1];
-    rule->month = data[2];
-    rule->hour = data[3];
-    rule->offset = data[4];
-
-    String dbg = "";
-    dbg += " week=" + String((int)data[0]);
-    dbg += " dow=" + String((int)data[1]);
-    dbg += " month=" + String((int)data[2]);
-    dbg += " hour=" + String((int)data[3]);
-    dbg += " offset=" + String((int)data[4]);
-
-    CTLog::debug("preferences: loaded " + String(tag) + " time data: " + dbg);
-}
-
-
 String CTPreferences::getConfig() {
     return this->preferences.getString("config", "{}");
 }
@@ -207,5 +193,52 @@ void CTPreferences::setConfig(String config) {
 
 void CTPreferences::clear() {
     this->preferences.clear();
-    CTLog::info("preferences: cleared preferences");
+    
+    this->copyLittleFsFile(MODULE_CONFIG_BKP_PATH, MODULE_CONFIG_FILE_PATH);
+    this->copyLittleFsFile(TIMEZONE_CONFIG_BKP_PATH, TIMEZONE_CONFIG_FILE_PATH);
+    this->copyLittleFsFile(WEBINTERFACE_CONFIG_BKP_PATH, WEBINTERFACE_CONFIG_FILE_PATH);
+    
+    CTLog::info("preferences: cleared preferences and config files");
+}
+
+void CTPreferences::overrideTimeChangeRule(const char* tag, TimeChangeRule *rule, JsonArray data) {
+    if (
+        (data[0] < 0 || data[0] > 4) ||
+        (data[1] < 1 || data[1] > 7) ||
+        (data[2] < 1 || data[2] > 12) ||
+        (data[3] < 0 || data[3] > 23)
+    ) {
+        CTLog::error("preferences: loading " + String(tag) + " time data failed - Invalid values!");
+    }
+
+    rule->week = data[0];
+    rule->dow = data[1];
+    rule->month = data[2];
+    rule->hour = data[3];
+    rule->offset = data[4];
+
+    String dbg = "";
+    dbg += " week=" + String((int)data[0]);
+    dbg += " dow=" + String((int)data[1]);
+    dbg += " month=" + String((int)data[2]);
+    dbg += " hour=" + String((int)data[3]);
+    dbg += " offset=" + String((int)data[4]);
+
+    CTLog::debug("preferences: loaded " + String(tag) + " time data: " + dbg);
+}
+
+void CTPreferences::copyLittleFsFile(const char* src, const char* dst) {
+    CTLog::info("preferences: copying file " + String(src) + " to " + String(dst) + "...");
+
+    File srcFile = LittleFS.open(src, "r");
+    File dstFile = LittleFS.open(dst, "w");
+
+        while (srcFile.available()) {
+            dstFile.write(srcFile.read());
+        }
+
+    srcFile.close();
+    dstFile.close();
+
+    CTLog::info("preferences: copied file " + String(src) + " to " + String(dst) + ".");
 }
