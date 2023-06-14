@@ -99,7 +99,13 @@ void setup() {
     } else {
         // Load time from RTC once in the beginning
         uint32_t timestamp = rtc.readTimeFromRTC();
-        setTime(timestamp);
+
+        if (timestamp >= EARLIEST_VALID_TIMESTAMP) {
+            CTLog::debug("main: loaded timestamp from rtc initially: " + String(timestamp));
+            setTime(timestamp);
+        } else {
+            CTLog::error("main: invalid timestamp loaded from rtc: " + String(timestamp));
+        }
 
         // Read module configuration from preferences on first loop
         needsToLoadConfig = true;

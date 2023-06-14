@@ -66,3 +66,6 @@
 
 // Force-clear settings on boot (development only)
 #define FORCE_CLEAR_ON_BOOT 0
+
+// The earliest timestamp that is considered valid
+#define EARLIEST_VALID_TIMESTAMP 1672527600 // 2023-01-01 00:00:00
