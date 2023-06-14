@@ -160,7 +160,7 @@ String CTPreferences::getConfig() {
 }
 
 String CTPreferences::getConfigTemplate() {
-    String configJson = this->preferences.getString("config", "{}");
+    String configJson = this->preferences.getString("config", "{\"template\": \"\"}");
     DynamicJsonDocument doc(1024);
 
     DeserializationError error = deserializeJson(doc, configJson);
