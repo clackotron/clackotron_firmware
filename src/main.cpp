@@ -273,6 +273,8 @@ void loop() {
             CTPeripherals::setLEDTwo(true);
 
             preferences.clear();
+            wifiManager.resetSettings();
+
             delay(2000);
             ESP.restart();
 
