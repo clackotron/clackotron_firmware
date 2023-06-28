@@ -172,7 +172,7 @@ void loop() {
 
         if (needsToLoadConfig) {
             configTemplate = preferences.getConfigTemplate();
-            CTLog::debug("main: loaded config template: " + configTemplate);
+            CTLog::info("main: loaded config template: " + configTemplate);
 
             needsToLoadConfig = false;
         }
@@ -188,6 +188,7 @@ void loop() {
         unsigned int iOutput = 0;
         unsigned int iInput = 0;
         String captureBuffer = "";
+        String outputBuffer = "";
 
         do {
             char c = configTemplate.charAt(iInput);
@@ -210,6 +211,7 @@ void loop() {
                     
                         for (int i = 0; i < toInsert.length(); i++) {
                             moduleOutputs[iOutput] = module.getPosForChar(toInsert.charAt(i));
+                            outputBuffer += toInsert.charAt(i);
                             iOutput++;
                         }
                     } else {
@@ -223,8 +225,10 @@ void loop() {
                                 for (int i = 0; i < sizeData; i++) {
                                     if (i < value.length()) {
                                         moduleOutputs[iOutput] = module.getPosForChar(value.charAt(i));
+                                        outputBuffer += value.charAt(i);
                                     } else {
                                         moduleOutputs[iOutput] = 0x27;
+                                        outputBuffer += " ";
                                     }
                                     iOutput++;
                                 }
@@ -236,6 +240,7 @@ void loop() {
 
                             for (int i = 0; i < sizeData; i++) {
                                 moduleOutputs[iOutput] = value;
+                                outputBuffer += "?";
                                 iOutput++;
                             }
                         }
@@ -251,6 +256,7 @@ void loop() {
                     capturing = true;
                 } else {
                     moduleOutputs[iOutput] = module.getPosForChar(c);
+                    outputBuffer += c;
                     iOutput++;
                 }
             }
@@ -259,12 +265,16 @@ void loop() {
         } while (iInput < configTemplate.length());
 
         // Write output to modules (if changed)
+        int numChanged = 0;
         for (int i = 0; i < MAX_CONNECTED_MODULES; i++) {
             if (moduleAddresses[i] != 0x00 && moduleOutputs[i] != lastModuleOutputs[i]) {
                 module.writeRaw(moduleAddresses[i], moduleOutputs[i]);
                 lastModuleOutputs[i] = moduleOutputs[i];
+                numChanged++;
             }
         }
+
+        if (numChanged > 0) CTLog::info("main: wrote template output: " + outputBuffer);
 
         // Check button press states and increment loop counter
         if (CTPeripherals::isButtonOnePressed()) buttonOnePressedFor++;
