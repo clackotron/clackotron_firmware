@@ -7,6 +7,7 @@
 #include <Preferences.h>
 #include <Timezone.h>
 
+/// @brief A class for managing preferences that are stored in flash or file system
 class CTPreferences {
   public:
     /// @brief Set up preferences provider

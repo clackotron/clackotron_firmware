@@ -5,12 +5,15 @@
 #include <WebServer.h>
 #include "ct_preferences.h"
 
+/// @brief A class for controlling the webserver (normal mode)
 class CTWebserver {
     public:
         CTWebserver();
         ~CTWebserver();
 
         /// @brief Set up the webserver endpoints
+        /// @param preferences - Pointer to the preferences object
+        /// @param needsToLoadConfig - Pointer to the flag that indicates if the config needs to be loaded
         void setup(CTPreferences* preferences, bool* needsToLoadConfig);
 
         /// @brief Handle incoming requests

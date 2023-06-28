@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 
+/// @brief A class for controlling the RTC
 class CTRTC {
   public:
     /// @brief Set up the RTC serial communication

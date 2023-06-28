@@ -5,6 +5,7 @@
 #include <ESPAsyncWebServer.h>
 #include "ct_module.h"
 
+/// @brief A class for controlling the async webserver (config mode)
 class CTWebServerAsync {
     public:
         /// @brief Set up the webserver and OTA endpoints

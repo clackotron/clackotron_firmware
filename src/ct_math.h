@@ -3,6 +3,10 @@
 
 #include <Arduino.h>
 
+/// @brief A class for math operations
+///
+/// This class contains static methods for math operations
+/// such as converting between BCD and decimal numbers.
 class CTMath {
   public:
     /// @brief Returns the decimal value of a BCD number

@@ -3,6 +3,9 @@
 
 #include <Arduino.h>
 
+/// @brief  A class for logging messages to the serial console
+///
+/// The log level can be configured in src/config.h as `DEBUG_LOG_LEVEL`.
 class CTLog {
     public:
         /// @brief Set up serial communication for debugging
