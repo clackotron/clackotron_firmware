@@ -155,7 +155,7 @@ void loop() {
             if (didUpdateTime) {
                 CTLog::debug("main: updated time from ntp server, writing to rtc");
                 rtc.writeTimeToRTC(timezone.toLocal(ntpClient->getEpochTime()));
-                setTime(ntpClient->getEpochTime());
+                setTime(timezone.toLocal(ntpClient->getEpochTime()));
             }
         }
 
