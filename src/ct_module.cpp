@@ -59,6 +59,23 @@ uint8_t CTModule::getPosForChar(char c) {
     return 39;
 }
 
+bool CTModule::canShowHour(uint8_t n) {
+    return n >= 0 && n <= 23;
+}
+
+uint8_t CTModule::getPosForHour(uint8_t n) {
+    return n;
+}
+
+bool CTModule::canShowMinute(uint8_t n) {
+    return n >= 0 && n <= 59;
+}
+
+uint8_t CTModule::getPosForMinute(uint8_t n) {
+    if (n >= 31) return n - 31;
+    return n + 30;
+}
+
 // Send a command to a module using its address and 0-2 parameters.
 // This is based on the protocol specification provided by adfinis:
 // https://github.com/adfinis/sbb-fallblatt/blob/master/doc/protocol_new_modules.md

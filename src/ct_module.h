@@ -42,6 +42,26 @@ class CTModule {
     /// @return The position of the character as uint8_t
     uint8_t getPosForChar(char c);
 
+    /// @brief Check if a value can be shown by an hour module
+    /// @param n - The value to check
+    /// @return True if the value can be shown, false otherwise
+    bool canShowHour(uint8_t n);
+
+    /// @brief Get the position of an hour value (blade index)
+    /// @param n - The value to get the position for
+    /// @return The position of the value as uint8_t
+    uint8_t getPosForHour(uint8_t n);
+
+    /// @brief Check if a value can be shown by a minute module
+    /// @param n - The value to check
+    /// @return True if the value can be shown, false otherwise
+    bool canShowMinute(uint8_t n);
+
+    /// @brief Get the position of a minute value (blade index)
+    /// @param n - The value to get the position for
+    /// @return The position of the value as uint8_t
+    uint8_t getPosForMinute(uint8_t n);
+
   private:
     KMP_RS485* rs485;
 
