@@ -196,6 +196,8 @@ void loop() {
             if (capturing) {
                 if (c == '}') {
                     if (captureBuffer.indexOf(':') == -1) {
+                        // Support for generic templates for alphanumeric modules
+                        // These can display all possible values but across multiple modules
                         String toInsert = "";
 
                         if (captureBuffer == "YYYY") toInsert = String(year(timestamp));
@@ -207,11 +209,54 @@ void loop() {
                         if (captureBuffer == "mm") toInsert = String(minute(timestamp));
                         if (captureBuffer == "ss") toInsert = String(second(timestamp));
                         if (toInsert.length() == 1) toInsert = "0" + toInsert;
-
                     
                         for (int i = 0; i < toInsert.length(); i++) {
                             moduleOutputs[iOutput] = module.getPosForChar(toInsert.charAt(i));
                             outputBuffer += toInsert.charAt(i);
+                            iOutput++;
+                        }
+
+                        // Support for showing some template values on the hour module
+                        // Not all of these can be properly displayed on the hour module
+                        char hourValue = NULL;
+                        if (captureBuffer == "YY_h") hourValue = year(timestamp);
+                        if (captureBuffer == "MM_h") hourValue = month(timestamp);
+                        if (captureBuffer == "DD_h") hourValue = day(timestamp);
+                        if (captureBuffer == "hh_h") hourValue = hour(timestamp);
+                        if (captureBuffer == "mm_h") hourValue = minute(timestamp);
+                        if (captureBuffer == "ss_h") hourValue = second(timestamp);
+
+                        if (hourValue != NULL) {
+                            if (module.canShowHour(hourValue)) {
+                                moduleOutputs[iOutput] = module.getPosForHour(hourValue);
+                                outputBuffer += "#";
+                            } else {
+                                moduleOutputs[iOutput] = 0x18; // ' ' on hour module
+                                outputBuffer += " ";
+                            }
+
+                            iOutput++;
+                        }
+
+                        // Support for showing some template values on the minute module
+                        // Not all of these can be properly displayed on the minute module
+                        char minuteValue = NULL;
+                        if (captureBuffer == "YY_m") minuteValue = year(timestamp);
+                        if (captureBuffer == "MM_m") minuteValue = month(timestamp);
+                        if (captureBuffer == "DD_m") minuteValue = day(timestamp);
+                        if (captureBuffer == "hh_m") minuteValue = hour(timestamp);
+                        if (captureBuffer == "mm_m") minuteValue = minute(timestamp);
+                        if (captureBuffer == "ss_m") minuteValue = second(timestamp);
+
+                        if (minuteValue != NULL) {
+                            if (module.canShowMinute(minuteValue)) {
+                                moduleOutputs[iOutput] = module.getPosForMinute(minuteValue);
+                                outputBuffer += "#";
+                            } else {
+                                moduleOutputs[iOutput] = 0x1D; // ' ' on minute module
+                                outputBuffer += " ";
+                            }
+
                             iOutput++;
                         }
                     } else {
@@ -240,7 +285,7 @@ void loop() {
 
                             for (int i = 0; i < sizeData; i++) {
                                 moduleOutputs[iOutput] = value;
-                                outputBuffer += "?";
+                                outputBuffer += "#";
                                 iOutput++;
                             }
                         }
