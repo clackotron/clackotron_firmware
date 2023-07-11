@@ -3,8 +3,10 @@
 #include "ct_rtc.h"
 #include "ct_math.h"
 #include "ct_logging.h"
+#include "config.h"
 
 void CTRTC::setup() {
+    Wire.setPins(PIN_SDA, PIN_SCL);
     Wire.begin();
 }
 

@@ -44,16 +44,20 @@
 #define MAX_CONNECTED_MODULES 100
 
 // The pins used for the RS485 communication to modules
-#define MODULE_RS485_TX 18
-#define MODULE_RS485_RX 16
+#define MODULE_RS485_TX 16
+#define MODULE_RS485_RX 18
 #define MODULE_RS485_DE 17
 
+// The pins used for I2C
+#define PIN_SDA 2
+#define PIN_SCL 1
+
 // The pins for additional peripherals
-#define PIN_BUTTON_1 26 // 11
-#define PIN_BUTTON_2 27 // 12
-#define PIN_LED_1 14 // 13
-#define PIN_LED_2 25 // 10
-#define PIN_LED_D 23 // 37
+#define PIN_BUTTON_1 0 // 11
+#define PIN_BUTTON_2 45 // 12
+#define PIN_LED_1 -1 // 13
+#define PIN_LED_2 -1 // 10
+#define PIN_LED_D 15 // 37
 
 // Timing configuration for the modules
 #define MODULE_BREAK_DURATION 100 // ms
