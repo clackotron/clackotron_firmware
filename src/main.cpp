@@ -16,6 +16,7 @@
 CTWebserver webserver;
 CTWebServerAsync webserverAsync;
 CTPreferences preferences;
+CTPeripherals peripherals;
 CTModule module;
 CTRTC rtc;
 
@@ -59,12 +60,15 @@ uint8_t lastModuleOutputs[MAX_CONNECTED_MODULES] = {' '};
 String configTemplate = "";
 bool needsToLoadConfig = true;
 
+// Internal cache whether or not WiFi is connected
+bool wifiIsConnected = false;
+
 void setup() {
     // Set up serial communication for debugging
     CTLog::setup();
 
     // Set up hardware peripherals
-    CTPeripherals::setup();
+    peripherals.setup();
 
     // Set up serial communication for rtc
     rtc.setup();
@@ -74,6 +78,9 @@ void setup() {
 
     // Set up our own preferences provider
     preferences.setup();
+
+    // Set LED to yellow while booting
+    peripherals.setLEDColor(CTLedColor::Yellow);
 
     // Load module configuration from preferences provider
     preferences.loadModuleAddresses(moduleAddresses);
@@ -132,6 +139,11 @@ void loop() {
 
     // Certain things should only be done if WiFi is available
     if (WiFi.status() == WL_CONNECTED) {
+        // Set LED to white once we're connected to WiFi
+        if (!wifiIsConnected) {
+            peripherals.setLEDColor(CTLedColor::White);
+            wifiIsConnected = true;
+        }
 
         // If Wifi was not available before, set flag and do initial setup
         if (!wifiSetupComplete) {
@@ -161,6 +173,12 @@ void loop() {
 
         // Handle webserver client
         webserver.handle();
+    } else {
+        // Set LED to white once we're connected to WiFi
+        if (wifiIsConnected) {
+            peripherals.setLEDColor(CTLedColor::Yellow);
+            wifiIsConnected = false;
+        }
     }
 
     // Process WiFi manager
@@ -322,13 +340,13 @@ void loop() {
         if (numChanged > 0) CTLog::info("main: wrote template output: " + outputBuffer);
 
         // Check button press states and increment loop counter
-        if (CTPeripherals::isButtonOnePressed()) buttonOnePressedFor++;
-        if (CTPeripherals::isButtonTwoPressed()) buttonTwoPressedFor++;
+        if (peripherals.isButtonOnePressed()) buttonOnePressedFor++;
+        if (peripherals.isButtonTwoPressed()) buttonTwoPressedFor++;
         
         // If button one was pressed for a while, allow additional functions
         if (IDEAL_TICK_TIME * buttonOnePressedFor > BUTTON_ONE_PRESS_TIME) {
             CTLog::info("main: button one pressed for " + String(buttonOnePressedFor) + " cycles, activating additional functions");
-            CTPeripherals::setLEDOne(true);
+            peripherals.setLEDColor(CTLedColor::Blue);
             
             webserverAsync.setup(&module);
 
@@ -338,7 +356,7 @@ void loop() {
         // If button two was pressed for a while, reset settings
         if (IDEAL_TICK_TIME * buttonTwoPressedFor > BUTTON_TWO_PRESS_TIME) {
             CTLog::info("main: button two pressed for " + String(buttonTwoPressedFor) + " cycles, resetting");
-            CTPeripherals::setLEDTwo(true);
+            peripherals.setLEDColor(CTLedColor::Red);
 
             preferences.clear();
             wifiManager.resetSettings();

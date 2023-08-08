@@ -53,11 +53,9 @@
 #define PIN_SCL 1
 
 // The pins for additional peripherals
-#define PIN_BUTTON_1 0 // 11
-#define PIN_BUTTON_2 45 // 12
-#define PIN_LED_1 -1 // 13
-#define PIN_LED_2 -1 // 10
-#define PIN_LED_D 15 // 37
+#define PIN_BUTTON_1 0
+#define PIN_BUTTON_2 45
+#define PIN_LED_D 15
 
 // Timing configuration for the modules
 #define MODULE_BREAK_DURATION 100 // ms
@@ -73,3 +71,6 @@
 
 // The earliest timestamp that is considered valid
 #define EARLIEST_VALID_TIMESTAMP 1672527600 // 2023-01-01 00:00:00
+
+// The brightness of the mode LED 0 - 255
+#define LED_BRIGHTNESS 30
