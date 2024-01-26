@@ -10,7 +10,7 @@
 #define DEBUG_LOG_LEVEL 2
 
 // The baudrate of the serial communication
-#define SERIAL_BAUDRATE 19200
+#define SERIAL_BAUDRATE 115200
 #define RS485_BAUDRATE 19200
 
 // The aproximate duration of one internal program loop ("tick")
