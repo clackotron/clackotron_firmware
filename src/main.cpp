@@ -236,15 +236,15 @@ void loop() {
 
                         // Support for showing some template values on the hour module
                         // Not all of these can be properly displayed on the hour module
-                        char hourValue = NULL;
-                        if (captureBuffer == "YY_h") hourValue = year(timestamp);
+                        int hourValue = -1;
+                        if (captureBuffer == "YY_h") hourValue = year(timestamp) - 2000;
                         if (captureBuffer == "MM_h") hourValue = month(timestamp);
                         if (captureBuffer == "DD_h") hourValue = day(timestamp);
                         if (captureBuffer == "hh_h") hourValue = hour(timestamp);
                         if (captureBuffer == "mm_h") hourValue = minute(timestamp);
                         if (captureBuffer == "ss_h") hourValue = second(timestamp);
 
-                        if (hourValue != NULL) {
+                        if (hourValue != -1) {
                             if (module.canShowHour(hourValue)) {
                                 moduleOutputs[iOutput] = module.getPosForHour(hourValue);
                                 outputBuffer += "#";
@@ -258,15 +258,15 @@ void loop() {
 
                         // Support for showing some template values on the minute module
                         // Not all of these can be properly displayed on the minute module
-                        char minuteValue = NULL;
-                        if (captureBuffer == "YY_m") minuteValue = year(timestamp);
+                        int minuteValue = -1;
+                        if (captureBuffer == "YY_m") minuteValue = year(timestamp) - 2000;
                         if (captureBuffer == "MM_m") minuteValue = month(timestamp);
                         if (captureBuffer == "DD_m") minuteValue = day(timestamp);
                         if (captureBuffer == "hh_m") minuteValue = hour(timestamp);
                         if (captureBuffer == "mm_m") minuteValue = minute(timestamp);
                         if (captureBuffer == "ss_m") minuteValue = second(timestamp);
 
-                        if (minuteValue != NULL) {
+                        if (minuteValue != -1) {
                             if (module.canShowMinute(minuteValue)) {
                                 moduleOutputs[iOutput] = module.getPosForMinute(minuteValue);
                                 outputBuffer += "#";
